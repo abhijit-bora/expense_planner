@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Expense Planner',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.cyan,
+        accentColor: Colors.amber,
       ),
       home: MyHomePage(),
     );
@@ -26,8 +27,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String titleInput;
-  String amountInput;
+  // String titleInput;
+  // String amountInput;
 
   final List<Transaction> _userTransacctions = [
     Transaction(
@@ -52,25 +53,34 @@ class _MyHomePageState extends State<MyHomePage> {
       id: DateTime.now().toString(),
     );
 
-    setState(() {
-      _userTransacctions.add(newTx);
-    });
+    setState(
+      () {
+        _userTransacctions.add(newTx);
+      },
+    );
   }
 
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
-        context: ctx,
-        builder: (_) {
-          return NewTransaction(_addNewTransaction);
-        });
+      context: ctx,
+      builder: (_) {
+        return GestureDetector(
+          onTap: () {},
+          child: NewTransaction(_addNewTransaction),
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('Expense Planner'),
+        title: Text(
+          'Expense Planner',
+          style: TextStyle(fontFamily: 'OpenSans-Bold'),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
@@ -85,12 +95,11 @@ class _MyHomePageState extends State<MyHomePage> {
             width: double.maxFinite,
             height: 50,
             child: Card(
-              color: Colors.black87,
+              // color: Colors.black87,
               child: Text(
                 'Chart',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.white70,
                   fontSize: 30,
                 ),
                 textAlign: TextAlign.center,
