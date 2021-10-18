@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './widgets/chart.dart';
 import './widgets/tansaction_list.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
@@ -15,6 +16,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.cyan,
         accentColor: Colors.amber,
+        fontFamily: 'Quicksand',
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+        ),
       ),
       home: MyHomePage(),
     );
@@ -31,19 +41,29 @@ class _MyHomePageState extends State<MyHomePage> {
   // String amountInput;
 
   final List<Transaction> _userTransacctions = [
-    Transaction(
-      id: 't1',
-      title: 'New Shoe',
-      amount: 200,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 'id2',
-      title: 'Groceries',
-      amount: 500,
-      date: DateTime.now(),
-    )
+    //   Transaction(
+    //     id: 't1',
+    //     title: 'New Shoe',
+    //     amount: 200,
+    //     date: DateTime.now(),
+    //   ),
+    //   Transaction(
+    //     id: 'id2',
+    //     title: 'Groceries',
+    //     amount: 500,
+    //     date: DateTime.now(),
+    //   )
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _userTransacctions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
@@ -79,7 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(
           'Expense Planner',
-          style: TextStyle(fontFamily: 'OpenSans-Bold'),
         ),
         actions: <Widget>[
           IconButton(
@@ -91,22 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: double.maxFinite,
-            height: 50,
-            child: Card(
-              // color: Colors.black87,
-              child: Text(
-                'Chart',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              elevation: 5,
-            ),
-          ),
+          Chart(_recentTransactions),
           TransactionList(_userTransacctions),
         ],
       ),
