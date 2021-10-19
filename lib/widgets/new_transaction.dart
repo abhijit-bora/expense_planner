@@ -29,6 +29,7 @@ class _NewTransactionState extends State<NewTransaction> {
     widget.addTx(
       enteredTitle,
       enteredAmount,
+      selectedDate,
     );
 
     Navigator.of(context).pop();
